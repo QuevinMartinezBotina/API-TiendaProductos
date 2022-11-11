@@ -1,12 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API</title>
 </head>
+
 <body>
-    <h1>API de <i>Santiago</i></h1>
+    <h1>API de <i>Tienda Productos</i></h1>
+
+    <div id="g_id_onload" data-client_id="80522426020-fv4btfu4ba99q04rqr22t2tf1qqq83aq.apps.googleusercontent.com"
+        data-auto_prompt="false" data-callback="handleCredentialResponse">
+    </div>
+    <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
+        data-shape="rectangular" data-logo_alignment="left">
+    </div>
+
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <script>
+        function handleCredentialResponse(response) {
+
+            //Google token
+
+
+            fetch('http://localhost:8080/api/auth/logingoogle', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id_token: response.credential
+                    })
+                }).then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                })
+
+
+        }
+    </script>
+
+
 </body>
+
 </html>

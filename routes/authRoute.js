@@ -3,7 +3,7 @@ const { Router } = require("express");
 const { check } = require("express-validator");
 
 /* Improtacioens del sistema */
-const { login } = require("../controllers/loginController");
+const { login, loginGoogle } = require("../controllers/loginController");
 const { validarCampos } = require("../middlewares/validar-campos");
 
 const router = Router();
@@ -18,6 +18,15 @@ router.post(
     validarCampos,
   ],
   login
+);
+
+router.post(
+  "/logingoogle",
+  [
+    check("id_token", "El id_token es necesario").not().isEmpty(),
+    validarCampos,
+  ],
+  loginGoogle
 );
 
 /* Exportando el objeto del enrutador. */
