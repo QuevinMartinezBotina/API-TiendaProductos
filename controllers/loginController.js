@@ -77,10 +77,39 @@ const loginGoogle = async (req, res = response) => {
   try {
     const { nombre, img, correo } = await googleVerify(id_token);
 
+    let usuario = await Usuario.findOne({ correo });
+
+    /* Crear un nuevo usuario si el usuario no existe. */
+    if (!usuario) {
+      //Crear usuario
+      const data = {
+        nombre,
+        correo,
+        password: ":P",
+        img,
+        google: true,
+      };
+
+      usuario = new Usuario(data);
+      await usuario.save();
+    }
+
+    /* Comprobando si el usuario está activo o no. */
+    if (usuario.estado === false) {
+      return res.status(401).json({
+        status: false,
+        msg: "Hable con el administrador, usuario no habililitado",
+      });
+    }
+
+    // * Generar el JWT
+    const token = await generarJWT(usuario.id);
+
     return res.status(200).json({
       status: true,
       msg: "Login realizado correctamente",
-      id_token,
+      token,
+      usuario,
     });
   } catch (error) {
     console.log(error);

@@ -18,6 +18,9 @@
         data-shape="rectangular" data-logo_alignment="left">
     </div>
 
+    <button id="google_signout">
+        Cerrar Sesión
+    </button>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
@@ -38,10 +41,25 @@
                 }).then(res => res.json())
                 .then(data => {
                     console.log(data);
+                    localStorage.setItem('correo', data.usuario.correo);
                 })
 
 
         }
+
+        const button = document.getElementById('google_signout');
+
+        button.addEventListener('click', () => {
+
+            google.accounts.id.disableAutoSelect();
+
+            google.accounts.id.revoke(localStorage.getItem('correo'), function () {
+                console.log('revocado');
+                localStorage.clear();
+                location.reload();
+            });
+
+        });
     </script>
 
 
