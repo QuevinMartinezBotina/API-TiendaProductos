@@ -1,4 +1,5 @@
 /* Importación de los archivos roleModel.js y usuariosModel.js. */
+const { Categoria } = require("../models");
 const Role = require("../models/roleModel");
 const Usuario = require("../models/usuariosModel");
 
@@ -59,9 +60,21 @@ const tieneRolPermitido = async (id = "", rolesPermitidos = []) => {
   }
 };
 
+const existeCategoria = async (nombre = "") => {
+  const categoria = nombre.toUpperCase();
+
+  /* Comprobando si la categoría existe. */
+  const categoriaExiste = await Categoria.findOne({ nombre: categoria });
+
+  if (categoriaExiste) {
+    throw new Error(`La categoría ${nombre} ya existe`);
+  }
+};
+
 module.exports = {
   esRolevalido,
   existeCorreo,
   tieneRolPermitido,
   existeUsuarioID,
+  existeCategoria,
 };

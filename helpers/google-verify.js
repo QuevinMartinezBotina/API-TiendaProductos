@@ -4,6 +4,12 @@ const { OAuth2Client } = require("google-auth-library");
 /* Creando una nueva instancia de la clase OAuth2Client. */
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
+/**
+ * Toma un token, lo envía a Google y devuelve el nombre, la imagen y el correo electrónico del
+ * usuario.
+ * @param [token] - El token que obtienes del cliente.
+ * @returns un objeto con el nombre, foto y correo electrónico del usuario.
+ */
 async function googleVerify(token = "") {
   const ticket = await client.verifyIdToken({
     idToken: token,

@@ -71,6 +71,12 @@ const login = async (req, res = response) => {
   }
 };
 
+/**
+ * Recibe un token de la interfaz, lo verifica con Google y luego crea un nuevo usuario si no existe
+ * @param req - El objeto de la solicitud.
+ * @param [res] - respuesta
+ * @returns El token y el usuario.
+ */
 const loginGoogle = async (req, res = response) => {
   const { id_token } = req.body;
 

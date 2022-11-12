@@ -17,8 +17,12 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT || 3000;
-    this.usuariosPath = "/api/usuarios";
-    this.authPath = "/api/auth";
+
+    this.paths = {
+      usuariosPath: "/api/usuarios",
+      authPath: "/api/auth",
+      categoriaPath: "/api/categorias",
+    };
 
     // * Conexion a la base de datos
     /* Esperando a que la base de datos se conecte. */
@@ -62,8 +66,9 @@ class Server {
    ?Una función que se utiliza para definir las rutas de la aplicación. */
   routes() {
     /* Diciéndole al servidor que use el archivo usuariosRoute cuando la url es /api/usuarios. */
-    this.app.use(this.usuariosPath, require("../routes/usuariosRoute"));
-    this.app.use(this.authPath, require("../routes/authRoute"));
+    this.app.use(this.paths.usuariosPath, require("../routes/usuariosRoute"));
+    this.app.use(this.paths.authPath, require("../routes/authRoute"));
+    this.app.use(this.paths.categoriaPath, require("../routes/categoriasRoute"));
   }
 
   /*
