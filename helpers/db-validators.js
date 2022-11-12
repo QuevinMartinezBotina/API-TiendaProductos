@@ -75,6 +75,12 @@ const existeNombreCategoria = async (nombre = "") => {
   }
 };
 
+/**
+ * "Si la categoría no existe, lanza un error".
+ *
+ * La función se llama en el siguiente código:
+ * @param [id] - El ID de la categoría que se va a comprobar.
+ */
 const existeCategoriaEnDB = async (id = "") => {
   /* Comprobando si la categoría existe. */
   const categoriaExiste = await Categoria.findById(id);
