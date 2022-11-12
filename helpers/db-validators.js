@@ -60,7 +60,11 @@ const tieneRolPermitido = async (id = "", rolesPermitidos = []) => {
   }
 };
 
-const existeCategoria = async (nombre = "") => {
+/**
+ * Si la categoría existe arroja un error.
+ * @param [nombre] - El nombre de la categoría.
+ */
+const existeNombreCategoria = async (nombre = "") => {
   const categoria = nombre.toUpperCase();
 
   /* Comprobando si la categoría existe. */
@@ -71,10 +75,20 @@ const existeCategoria = async (nombre = "") => {
   }
 };
 
+const existeCategoriaEnDB = async (id = "") => {
+  /* Comprobando si la categoría existe. */
+  const categoriaExiste = await Categoria.findById(id);
+
+  if (!categoriaExiste) {
+    throw new Error(`La categoría con el ID ${id} no existe`);
+  }
+};
+
 module.exports = {
   esRolevalido,
   existeCorreo,
   tieneRolPermitido,
   existeUsuarioID,
-  existeCategoria,
+  existeNombreCategoria,
+  existeCategoriaEnDB,
 };

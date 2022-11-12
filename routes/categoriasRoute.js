@@ -6,8 +6,12 @@ const {
   obtenerCategorias,
   obtenerCategoriaPorId,
   actualizarCategoria,
+  eliminarCategoria,
 } = require("../controllers/categoriasController");
-const { existeCategoria } = require("../helpers/db-validators");
+const {
+  existeNombreCategoria,
+  existeCategoriaEnDB,
+} = require("../helpers/db-validators");
 const { validarJWT, tieneRole, esAdminRole } = require("../middlewares");
 
 /* Improtacioens del sistema */
@@ -41,7 +45,7 @@ router.post(
     check("nombre", "El nombre es obligatorio")
       .not()
       .isEmpty()
-      .custom(existeCategoria),
+      .custom(existeNombreCategoria),
     validarCampos,
   ],
   crearCategoria
@@ -52,14 +56,23 @@ router.put(
   [
     validarJWT,
     tieneRole("ADMIN_ROLE", "VENTAS_ROLE"),
-    check("id", "El ID no es válido").isMongoId(),
-    check("nombre").custom(existeCategoria),
+    check("id", "El ID no es válido").isMongoId().custom(existeCategoriaEnDB),
+    check("nombre").custom(existeNombreCategoria),
     validarCampos,
   ],
   actualizarCategoria
 );
 
-router.delete("/");
+router.delete(
+  "/:id",
+  [
+    validarJWT,
+    tieneRole("ADMIN_ROLE", "VENTAS_ROLE"),
+    check("id", "El ID no es válido").isMongoId().custom(existeCategoriaEnDB),
+    validarCampos,
+  ],
+  eliminarCategoria
+);
 
 /* Exportando el objeto del enrutador. */
 module.exports = router;

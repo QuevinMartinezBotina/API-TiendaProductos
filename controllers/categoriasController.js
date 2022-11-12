@@ -85,6 +85,12 @@ const crearCategoria = async (req, res = response) => {
   });
 };
 
+/**
+ * Actualiza una categoría.
+ * @param req - solicitud
+ * @param [res] - respuesta
+ * @returns La categoría actualizada.
+ */
 const actualizarCategoria = async (req, res = response) => {
   const { id } = req.params;
 
@@ -109,9 +115,35 @@ const actualizarCategoria = async (req, res = response) => {
   });
 };
 
+/**
+ * Encuentra una categoría por id y actualiza su estado a falso.
+ * @param req - El objeto de solicitud representa la solicitud HTTP y tiene propiedades para la cadena
+ * de consulta de solicitud, parámetros, cuerpo, encabezados HTTP, etc.
+ * @param [res] - respuesta
+ * @returns La respuesta está siendo devuelta.
+ */
+const eliminarCategoria = async (req, res = response) => {
+  const { id } = req.params;
+
+  const categoria = await Categoria.findByIdAndUpdate(
+    id,
+    { estado: false },
+    { new: true }
+  );
+
+  console.log(`${categoria} y el ID: ${id}`);
+
+  return res.status(200).json({
+    status: true,
+    msg: "Categoría eliminada con éxito",
+    categoria,
+  });
+};
+
 module.exports = {
   obtenerCategorias,
   obtenerCategoriaPorId,
   crearCategoria,
   actualizarCategoria,
+  eliminarCategoria,
 };
