@@ -22,6 +22,7 @@ class Server {
       usuariosPath: "/api/usuarios",
       authPath: "/api/auth",
       categoriaPath: "/api/categorias",
+      productoPath: "/api/productos",
     };
 
     // * Conexion a la base de datos
@@ -68,7 +69,11 @@ class Server {
     /* Diciéndole al servidor que use el archivo usuariosRoute cuando la url es /api/usuarios. */
     this.app.use(this.paths.usuariosPath, require("../routes/usuariosRoute"));
     this.app.use(this.paths.authPath, require("../routes/authRoute"));
-    this.app.use(this.paths.categoriaPath, require("../routes/categoriasRoute"));
+    this.app.use(
+      this.paths.categoriaPath,
+      require("../routes/categoriasRoute")
+    );
+    this.app.use(this.paths.productoPath, require("../routes/productosRoute"));
   }
 
   /*

@@ -41,7 +41,7 @@ const ProductoSchema = Schema({
 
 /* Un método que se utiliza para eliminar las propiedades __v y estado del objeto. */
 ProductoSchema.methods.toJSON = function () {
-  const { __v, estado, ...data } = this.toObject();
+  const { __v, ...data } = this.toObject();
   return data;
 };
 

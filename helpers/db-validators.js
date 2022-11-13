@@ -1,5 +1,5 @@
 /* Importación de los archivos roleModel.js y usuariosModel.js. */
-const { Categoria } = require("../models");
+const { Categoria, Producto } = require("../models");
 const Role = require("../models/roleModel");
 const Usuario = require("../models/usuariosModel");
 
@@ -60,6 +60,8 @@ const tieneRolPermitido = async (id = "", rolesPermitidos = []) => {
   }
 };
 
+// * Validaciones para categorías
+
 /**
  * Si la categoría existe arroja un error.
  * @param [nombre] - El nombre de la categoría.
@@ -90,6 +92,38 @@ const existeCategoriaEnDB = async (id = "") => {
   }
 };
 
+// * Validaciones para Productos
+
+/**
+ * "Si el producto existe, lanza un error, de lo contrario, no hagas nada".
+ *
+ * La función se llama en el siguiente código:
+ * @param [nombre] - El nombre del producto
+ */
+const existeNombreDeProducto = async (nombre = "") => {
+  const producto = nombre.toUpperCase();
+
+  const productoDB = await Producto.findOne({ nombre: producto });
+
+  if (productoDB) {
+    throw new Error(`El producto ${nombre} ya existe`);
+  }
+};
+
+/**
+ * "Si el producto con la ID dada no existe, lanza un error".
+ *
+ * La función se llama en el siguiente código:
+ * @param [id] - El ID del producto a buscar en la base de datos.
+ */
+const existeProductoEnDB = async (id = "") => {
+  const productoDB = await Producto.findById(id);
+
+  if (!productoDB) {
+    throw new Error(`El producto con el ID ${id} no existe`);
+  }
+};
+
 module.exports = {
   esRolevalido,
   existeCorreo,
@@ -97,4 +131,6 @@ module.exports = {
   existeUsuarioID,
   existeNombreCategoria,
   existeCategoriaEnDB,
+  existeNombreDeProducto,
+  existeProductoEnDB,
 };
