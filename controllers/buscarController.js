@@ -97,7 +97,9 @@ const buscarProductos = async (termino = "", res = response) => {
   const regex = new RegExp(termino, "i");
 
   /* Crear una expresión regular que se usará para buscar el `término` en la base de datos. */
-  const productos = await Producto.find({ nombre: regex });
+  const productos = await Producto.find({ nombre: regex })
+    .populate("categoria", "nombre")
+    .populate("usuario", "nombre");
 
   return res.status(200).json({
     status: true,

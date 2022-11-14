@@ -5,6 +5,7 @@ const { response } = require("express");
 const express = require("express");
 const cors = require("cors");
 const { dbConecction } = require("../database/config");
+const fileUpload = require("express-fileupload");
 
 /* 
   ? La clase Server es una clase que crea un servidor express y lo configura. 
@@ -24,6 +25,7 @@ class Server {
       categoriaPath: "/api/categorias",
       productoPath: "/api/productos",
       buscarPath: "/api/buscar",
+      cargarArchivosPath: "/api/cargarArchivos",
     };
 
     // * Conexion a la base de datos
@@ -62,6 +64,15 @@ class Server {
     // * Carpeta publica
     /* Diciéndole al servidor que use la carpeta pública como la carpeta raíz. */
     this.app.use(express.static("public"));
+
+    // * Carga de archivos
+    /* Un middleware que permite que el servidor cargue archivos. */
+    this.app.use(
+      fileUpload({
+        useTempFiles: true,
+        createParentPath: true,
+      })
+    );
   }
 
   /*
@@ -70,6 +81,10 @@ class Server {
     /* Diciéndole al servidor que use el archivo usuariosRoute cuando la url es /api/usuarios. */
     this.app.use(this.paths.authPath, require("../routes/authRoute"));
     this.app.use(this.paths.buscarPath, require("../routes/buscarRoute"));
+    this.app.use(
+      this.paths.cargarArchivosPath,
+      require("../routes/uploadsRoute")
+    );
     this.app.use(this.paths.usuariosPath, require("../routes/usuariosRoute"));
     this.app.use(
       this.paths.categoriaPath,
