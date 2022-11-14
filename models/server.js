@@ -23,6 +23,7 @@ class Server {
       authPath: "/api/auth",
       categoriaPath: "/api/categorias",
       productoPath: "/api/productos",
+      buscarPath: "/api/buscar",
     };
 
     // * Conexion a la base de datos
@@ -67,8 +68,9 @@ class Server {
    ?Una función que se utiliza para definir las rutas de la aplicación. */
   routes() {
     /* Diciéndole al servidor que use el archivo usuariosRoute cuando la url es /api/usuarios. */
-    this.app.use(this.paths.usuariosPath, require("../routes/usuariosRoute"));
     this.app.use(this.paths.authPath, require("../routes/authRoute"));
+    this.app.use(this.paths.buscarPath, require("../routes/buscarRoute"));
+    this.app.use(this.paths.usuariosPath, require("../routes/usuariosRoute"));
     this.app.use(
       this.paths.categoriaPath,
       require("../routes/categoriasRoute")
