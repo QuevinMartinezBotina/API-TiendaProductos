@@ -124,6 +124,23 @@ const existeProductoEnDB = async (id = "") => {
   }
 };
 
+// * Validaciones para colecciones permitidas
+/**
+ * Tira error si no se permite la recogida
+ * @param [coleccion] - La colección que desea consultar.
+ * @param [colecciones] - Una matriz de cadenas que representan las colecciones que están permitidas.
+ * @returns verdadero
+ */
+const coleccionesPermitidas = (coleccion = "", colecciones = []) => {
+  const coleccionesValidas = colecciones.includes(coleccion);
+
+  if (!coleccionesValidas) {
+    throw new Error(`La colección ${coleccion} no es permitida`);
+  }
+
+  return true;
+};
+
 module.exports = {
   esRolevalido,
   existeCorreo,
@@ -133,4 +150,5 @@ module.exports = {
   existeCategoriaEnDB,
   existeNombreDeProducto,
   existeProductoEnDB,
+  coleccionesPermitidas,
 };
