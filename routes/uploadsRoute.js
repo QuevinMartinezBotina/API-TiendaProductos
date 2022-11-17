@@ -4,6 +4,8 @@ const { check } = require("express-validator");
 const {
   cargarArchivo,
   actualizarImg,
+  mostrarImagen,
+  actualizarImgCloudinary,
 } = require("../controllers/uploadsController");
 const { coleccionesPermitidas } = require("../helpers/db-validators");
 const { validaArchivoSubir } = require("../middlewares");
@@ -25,7 +27,19 @@ router.put(
     ),
     validarCampos,
   ],
-  actualizarImg
+  /* actualizarImg */ actualizarImgCloudinary
+);
+
+router.get(
+  "/:coleccion/:id",
+  [
+    check("id", "El id debe ser de Mongo").isMongoId(),
+    check("coleccion").custom((c) =>
+      coleccionesPermitidas(c, ["usuarios", "productos"])
+    ),
+    validarCampos,
+  ],
+  mostrarImagen
 );
 
 /* Exportando el objeto del enrutador. */
